@@ -14,4 +14,7 @@ void motor_init(motor_t motor);
 void set_motor(motor_t motor, uint16_t speed);
 uint16_t get_motor_speed(motor_t motor);
 
+void motor_init_all(void);
+void set_all_motors(uint16_t speed);
+
 #endif

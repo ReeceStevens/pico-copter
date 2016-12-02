@@ -185,3 +185,17 @@ uint16_t get_motor_speed(motor_t motor){
     }
     return 0;
 }
+
+void motor_init_all(void) {
+    motor_init(M1);
+    motor_init(M2);
+    motor_init(M3);
+    motor_init(M4);
+}
+
+void set_all_motors(uint16_t speed) {
+    set_motor(M1, speed);
+    set_motor(M2, speed);
+    set_motor(M3, speed);
+    set_motor(M4, speed);
+}

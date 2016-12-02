@@ -90,7 +90,34 @@ And the following are the contents of the lab 11 report:
 \end{figure}
 
 \section{Software Design}
-% TODO: How the software works
+
+The software for picocopter is comprised of an accelerometer module, four motor
+PWM modules, and P (no ID) controller. At a high level, it is a feedback loop
+system with the input being motor speeds and feedback information being the
+accelerometer data. The goal of picocopter to stay afloat means minimizing
+deviations from 0 on all axes of the accelerometer.
+
+The accelerometer used is an ST LIS2HH12TR, a MEMS 3-axis accelerometer. The
+low-level registers and basic communication protocols are implemented in
+\texttt{accelerometer.c}. Data collection is triggered by a \texttt{DATA\_READY}
+pin on the accelerometer; each read stores the data in an unsafe struct. When
+reading the data, the main loop will disable the edge triggered interrupt and
+move the contents of this unsafe struct to a safe global, then re-enable
+the data ready interrupt. This way, the main function receives only the most
+up-to-date information from the accelerometer; older samples that are no longer
+relevant are dropped.
+
+For each of the four motors, a PWM channel is enabled. Each motor is
+addressable by its \texttt{motor\_t} identifier, so that the main loop can
+independently set the duty cycle for each motor using the \texttt{set\_motor}
+function.
+
+Finally, the accelerometer information is used to calculate the new motor
+speeds in the main loop via the P controller. The output of the accelerometer
+is mapped to the range of the duty cycle settings for each motor, and this
+value is used to update the motor speeds (see
+\texttt{main.c:p\_controller\_update} for more implementation details).
+
 
 \section{Measurement Data}
 % TODO: Measurement data

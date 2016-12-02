@@ -19,8 +19,7 @@ void heartbeat_init(void) {
     GPIOPinTypeGPIOOutput(GPIO_PORTF_BASE, GPIO_PIN_3);
 }
 
-int
-main(void)
+int main(void)
 {
     volatile uint32_t ui32Loop;
 
@@ -33,7 +32,7 @@ main(void)
     motor_init(M1);
     printf("Init complete, starting up the quadcopter!\n\n");
 
-    get_acceleration(accel_frame);
+    get_acceleration(&accel_frame);
     set_motor(M1, 500);
 
     int16_t Px, Py, Pz, Ix, Iy, Iz, Dx, Dy, Dz;
@@ -85,8 +84,8 @@ main(void)
         //Gives acceleration in 12 bit number on scale of 0-4095, mapped to -2 to +2 g
         //For ALL motors, values are calculted in the same way;
         // BUT motors 2 and 3 are wired in the opposite direction for simplicity in code
-        prev_accel_frame = accel_frame
-        get_acceleration(accel_frame);
+        prev_accel_frame = accel_frame;
+        get_acceleration(&accel_frame);
 
         //P -- map the Gs to the motor duty cycle (0-1000)
         Px = (4095-accel_frame.x)*1000/4095;
